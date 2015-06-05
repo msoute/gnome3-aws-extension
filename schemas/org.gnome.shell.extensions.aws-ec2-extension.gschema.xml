@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<schemalist gettext-domain="aws-ec2-extension">
+    <schema path="/org/gnome/shell/extensions/aws-ec2-extension/" id="org.gnome.shell.extensions.aws-ec2-extension">
+        <!-- jenkins connection -->
+        <key type="s" name="settings-json">
+            <default>'
+                {
+                    "aws_cli_profile" : "",
+                    "aws_filter_tag_value",
+                    "ssh_username" : "",
+                    "ssh_key" : ""
+                }
+                '
+            </default>
+            <summary>JSON settings</summary>
+            <description>Settings for Aws Ec2 Extension in JSON format.</description>
+        </key>
+    </schema>
+</schemalist>
