@@ -10,7 +10,7 @@ const GLib = imports.gi.GLib;
 const Me = imports.misc.extensionUtils.getCurrentExtension();
 const Ec2PopupMenuScrollSection = Me.imports.src.ec2PopupMenuScrollSection;
 const Ec2PopupMenuItem = Me.imports.src.ec2PopupMenuItem;
-const Settings = Me.imports.src.settings;
+const AwsUtil = Me.imports.src.awsUtil;
 
 let settings;
 
@@ -22,17 +22,14 @@ const Ec2PopupMenu = new Lang.Class({
         this.parent(sourceActor, arrowAlignment, arrowSide);
         // add seperator to popup menu
         this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-
-        let settingsJSON = Settings.getSettingsJSON(settings);
-        let filterValue  = settingsJSON['aws_filter_tag_value'];
-
-        let [res, out, err, status] = GLib.spawn_command_line_sync("aws --profile devops ec2 describe-instances --output json --filters Name=tag:Name,Values="+filterValue+" --query 'Reservations[*].Instances[*].{Ip:PublicIpAddress, Tag:Tags}'");
-        let awsJsonResponse = JSON.parse(out.toString());
+        let awsJsonResponse = AwsUtil.listInstances(settings);
         this.instances = new Ec2PopupMenuScrollSection.Ec2PopupMenuScrollSection();
 
         awsJsonResponse.forEach((ec2Instance) => {
-            let environment = this.findTag(ec2Instance, "Name");
-            this.instances.addMenuItem(new Ec2PopupMenuItem.Ec2PopupMenuItem(ec2Instance[0]['Ip'],environment,  settings));
+            if (ec2Instance[0]['State'] === "running") {
+                let environment = AwsUtil.findTag(ec2Instance, "Name");
+                this.instances.addMenuItem(new Ec2PopupMenuItem.Ec2PopupMenuItem(ec2Instance[0]['Ip'], environment, ec2Instance[0]['InstanceId'], settings));
+            }
         });
 
         this.addMenuItem(this.instances);
@@ -52,12 +49,5 @@ const Ec2PopupMenu = new Lang.Class({
             }
         });
         this.addMenuItem(this._menu_settings);
-    },
-    findTag: function (ec2Instance, key) {
-        for (var i = 0; i < ec2Instance[0]['Tag'].length; i++) {
-            if (ec2Instance[0]['Tag'][i]['Key'] == key) {
-                return ec2Instance[0]['Tag'][i]['Value'];
-            }
-        }
     }
 });
