@@ -21,17 +21,9 @@ const Ec2TrayItem = new Lang.Class({
         });
         this.actor.add_actor(this._iconActor);
         this.setMenu(new Ec2PopupMenu.Ec2PopupMenu(this, this.actor, 0.25, St.Side.TOP, settings));
-    //    this._mainloopInit();
     },
 
-    /*_mainloopInit: function() {
-        // create new main loop
-        this._mainloop = Mainloop.timeout_add(30*1000, Lang.bind(this, function(){
-            return true;
-        }));
-    },*/
     destroy: function() {
-        // Mainloop.source_remove(this._mainloop);
         this.parent();
     }
 })
