@@ -1,16 +1,17 @@
 const Lang = imports.lang;
 const St = imports.gi.St;
 const Gio = imports.gi.Gio;
-const Util = imports.misc.util;
+
 const PopupMenu = imports.ui.popupMenu;
 
 const Me = imports.misc.extensionUtils.getCurrentExtension();
+const SshUtil = Me.imports.src.sshUtil;
 
 const Ec2PopupSubMenuConnectItem = new Lang.Class({
         Name: 'Ec2PopupSubMenuConnectItem',
         Extends: PopupMenu.PopupBaseMenuItem,
 
-        _init: function (settings, host, params) {
+        _init: function (settings, host, environment, params) {
             this.parent(params);
             this.settings = settings;
             this.host = host;
@@ -24,8 +25,7 @@ const Ec2PopupSubMenuConnectItem = new Lang.Class({
 
             this.connect("activate", Lang.bind(this, function () {
                 let command = "ssh " + this.settings["username"] + "@" + this.host;
-                Util.spawn(['/usr/bin/guake']);
-                Util.spawn(['/usr/bin/guake', '-n', 'instance', '-e', command]);
+                SshUtil.connect(command, environment)
             }));
         },
         updateSettings: function (settings) {

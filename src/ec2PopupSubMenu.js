@@ -20,7 +20,7 @@ const Ec2PopupSubMenu = new Lang.Class({
         this.settingsJson = Settings.getSettingsJSON(settings);
         this.instanceId = instanceId;
         this.host = host;
-        this.menu.addMenuItem(new Ec2PopupSubMenuConnectItem.Ec2PopupSubMenuConnectItem(this.settingsJson, host,{}))
+        this.menu.addMenuItem(new Ec2PopupSubMenuConnectItem.Ec2PopupSubMenuConnectItem(this.settingsJson, host, environment,{}))
         this.menu.addMenuItem(new Ec2PopupSubMenuTerminateItem.Ec2PopupSubMenuTerminateItem(this.settingsJson, instanceId, {}))
     }
 
