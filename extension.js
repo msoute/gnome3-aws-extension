@@ -5,19 +5,28 @@ const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
 const Convenience = Me.imports.lib.convenience;
 const Ec2TrayItem = Me.imports.src.ec2TrayItem;
-let text, button;
 let statusIcon;
 let settings;
+let event_signals = [];
 
-function init() {
+function init(extensionMeta) {
+    let theme = imports.gi.Gtk.IconTheme.get_default();
+    theme.append_search_path(extensionMeta.path + "/icons");
     settings = Convenience.getSettings();
-    statusIcon = new Ec2TrayItem.Ec2TrayItem(settings);
+
 }
 
 function enable() {
+    global.log("Enable");
+    statusIcon = new Ec2TrayItem.Ec2TrayItem(settings);
     Main.panel.addToStatusArea("ec2", statusIcon);
 }
 
 function disable() {
+    global.log("Disable");
     statusIcon.destroy();
+    // disconnect all signal listeners
+    for( var i=0 ; i<event_signals.length ; ++i ) {
+        settings.disconnect(event_signals[i]);
+    }
 }
