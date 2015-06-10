@@ -16,23 +16,22 @@ const Ec2TrayItem = new Lang.Class({
     _init: function (settings) {
         this.parent(0.25, "EC2 Panel Button", false );
         this.settings = settings;
-        let statusIcon = new St.Icon({
+        this._iconActor = new St.Icon({
             style_class: 'ec2-icon'
         });
-        this._iconActor = statusIcon;
         this.actor.add_actor(this._iconActor);
         this.setMenu(new Ec2PopupMenu.Ec2PopupMenu(this, this.actor, 0.25, St.Side.TOP, settings));
-        this._mainloopInit();
+    //    this._mainloopInit();
     },
 
-    _mainloopInit: function() {
+    /*_mainloopInit: function() {
         // create new main loop
         this._mainloop = Mainloop.timeout_add(30*1000, Lang.bind(this, function(){
             return true;
         }));
-    },
+    },*/
     destroy: function() {
-        Mainloop.source_remove(this._mainloop);
+        // Mainloop.source_remove(this._mainloop);
         this.parent();
     }
 })
