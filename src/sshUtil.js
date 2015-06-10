@@ -6,7 +6,8 @@ function connect(command, environment) {
     if (!file.query_exists(null)) {
         Util.spawn(['gnome-terminal', '-e', command])
     } else {
-        Util.spawn(['/usr/bin/guake', '-n', '-e', command]);
+        global.log(command);
+        Util.spawn(['/usr/bin/guake', '-n','instance', '-e', command]);
         Util.spawn(['/usr/bin/guake', '--rename-current-tab', environment, '--show']);
     }
 }
