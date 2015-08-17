@@ -26,7 +26,7 @@ const Ec2PopupMenu = new Lang.Class({
         awsJsonResponse.forEach((ec2Instance) => {
             if (ec2Instance[0]['State'] === "running") {
                 let environment = AwsUtil.findTag(ec2Instance, "Name");
-                this.instances.addMenuItem(new Ec2PopupSubMenu.Ec2PopupSubMenu(ec2Instance[0]['Ip'], environment, ec2Instance[0]['InstanceId'], settings));
+                this.instances.addMenuItem(new Ec2PopupSubMenu.Ec2PopupSubMenu(ec2Instance[0]['PublicIp'],ec2Instance[0]['PrivateIp'],environment, ec2Instance[0]['InstanceId'], settings));
             }
         });
         this.addMenuItem(this.instances);

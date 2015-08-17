@@ -15,12 +15,13 @@ const Ec2PopupSubMenu = new Lang.Class({
     Name: 'Ec2PopupSubMenu',
     Extends: PopupMenu.PopupSubMenuMenuItem,
 
-    _init: function (host, environment, instanceId, settings, params) {
+    _init: function (publicIp, privateIp, environment, instanceId, settings, params) {
         this.parent(environment, "", params);
         this.settingsJson = Settings.getSettingsJSON(settings);
         this.instanceId = instanceId;
-        this.host = host;
-        this.menu.addMenuItem(new Ec2PopupSubMenuConnectItem.Ec2PopupSubMenuConnectItem(this.settingsJson, host, environment,{}))
+        this.publicIp = publicIp;
+        this.privateIp = privateIp;
+        this.menu.addMenuItem(new Ec2PopupSubMenuConnectItem.Ec2PopupSubMenuConnectItem(this.settingsJson, this.publicIp, this.privateIp, environment,{}))
         this.menu.addMenuItem(new Ec2PopupSubMenuTerminateItem.Ec2PopupSubMenuTerminateItem(this.settingsJson, instanceId, {}))
     }
 
