@@ -12,24 +12,19 @@ const Ec2PopupMenuScrollSection = Me.imports.src.ec2PopupMenuScrollSection;
 const Ec2PopupSubMenu = Me.imports.src.ec2PopupSubMenu;
 const AwsUtil = Me.imports.src.awsUtil;
 
-let settings;
-
+let instances;
+let settingsJson;
 const Ec2PopupMenu = new Lang.Class({
     Name: 'Ec2PopupMenu',
     Extends: PopupMenu.PopupMenu,
 
     _init: function (indicator, sourceActor, arrowAlignment, arrowSide, settings) {
+        settingsJson = settings;
         this.parent(sourceActor, arrowAlignment, arrowSide);
         this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-        let awsJsonResponse = AwsUtil.listInstances(settings);
-        this.instances = new Ec2PopupMenuScrollSection.Ec2PopupMenuScrollSection();
-        awsJsonResponse.forEach((ec2Instance) => {
-            if (ec2Instance[0]['State'] === "running") {
-                let environment = AwsUtil.findTag(ec2Instance, "Name");
-                this.instances.addMenuItem(new Ec2PopupSubMenu.Ec2PopupSubMenu(ec2Instance[0]['PublicIp'],ec2Instance[0]['PrivateIp'],environment, ec2Instance[0]['InstanceId'], settings));
-            }
-        });
-        this.addMenuItem(this.instances);
+        instances = new Ec2PopupMenuScrollSection.Ec2PopupMenuScrollSection();
+        this._updateInstanceList();
+        this.addMenuItem(instances);
         this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this.addMenuItem(this._createIconBarMenuItem());
 
@@ -44,9 +39,10 @@ const Ec2PopupMenu = new Lang.Class({
         return icon;
     },
     _createIconBarMenuItem: function() {
-        let item;
         this.item = new PopupMenu.PopupBaseMenuItem({ reactive: false, can_focus: false });
-        this.item.actor.add(this._createActionButton('rotation-allowed-symbolic','refresh'),{ expand: true, x_fill: false, x_align: St.Align.START});
+        this._refreshAction = this._createActionButton('rotation-allowed-symbolic','refresh');
+        this._refreshAction.connect('clicked', Lang.bind(this, this._updateInstanceList));
+        this.item.actor.add(this._refreshAction,{ expand: true, x_fill: false, x_align: St.Align.START});
         this._settingsAction = this._createActionButton('preferences-system-symbolic', _("Settings"));
         this._settingsAction.connect('clicked', Lang.bind(this, this._onSettingsClicked));
         this.item.actor.add(this._settingsAction, { expand: true, x_fill: false,  x_align: St.Align.END});
@@ -61,5 +57,15 @@ const Ec2PopupMenu = new Lang.Class({
 
         }
         this.itemActivated();
+    },
+    _updateInstanceList : function() {
+        let awsJsonResponse = AwsUtil.listInstances(settingsJson);
+        instances.removeAll();
+        awsJsonResponse.forEach((ec2Instance) => {
+            if (ec2Instance[0]['State'] === "running") {
+                let environment = AwsUtil.findTag(ec2Instance, "Name");
+                instances.addMenuItem(new Ec2PopupSubMenu.Ec2PopupSubMenu(ec2Instance[0]['PublicIp'],ec2Instance[0]['PrivateIp'],environment, ec2Instance[0]['InstanceId'], settingsJson));
+            }
+        });
     }
 });

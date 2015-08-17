@@ -7,7 +7,6 @@ const PopupMenu = imports.ui.popupMenu;
 const Me = imports.misc.extensionUtils.getCurrentExtension();
 const Ec2PopupSubMenuConnectItem = Me.imports.src.ec2PopupSubMenuConnectItem;
 const Ec2PopupSubMenuTerminateItem = Me.imports.src.ec2PopupSubMenuTerminateItem;
-const Settings = Me.imports.src.settings;
 const AwsUtil = Me.imports.src.awsUtil;
 
 let settingsJsonm, instanceId, host;
@@ -17,7 +16,7 @@ const Ec2PopupSubMenu = new Lang.Class({
 
     _init: function (publicIp, privateIp, environment, instanceId, settings, params) {
         this.parent(environment, "", params);
-        this.settingsJson = Settings.getSettingsJSON(settings);
+        this.settingsJson =settings;
         this.instanceId = instanceId;
         this.publicIp = publicIp;
         this.privateIp = privateIp;
