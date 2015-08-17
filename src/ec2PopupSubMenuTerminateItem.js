@@ -22,7 +22,6 @@ const Ec2PopupSubMenuTerminateItem = new Lang.Class({
         this.box = new St.BoxLayout({style_class: 'popup-combobox-item', style: 'margin-left: 20px;color:red'});
         this.label = new St.Label({text: 'Terminate instance'});
 
-        //this.box.add(this.icon);
         this.box.add(this.label);
         this.actor.add_child(this.box);
 
@@ -31,10 +30,6 @@ const Ec2PopupSubMenuTerminateItem = new Lang.Class({
                 this._createWarningDialog(instanceId);
             }
         }));
-    },
-    updateSettings: function (settings) {
-        this.settings = settings;
-        this.label.text = this.settings.name;
     },
     _createWarningDialog: function (instanceId) {
         dialog = new TerminateInstanceDialog(instanceId);
@@ -54,13 +49,14 @@ const TerminateInstanceDialog = new Lang.Class({
         let mainContentLayout = new St.BoxLayout({vertical: false});
         mainContentLayout.add(this.label);
         instanceIdToTerminate = instanceId;
+
         this.contentLayout.add(mainContentLayout, {x_fill: true, y_fill: false});
         this.addButton({label: "Cancel", action: this.cancelTerminateInstance}, {});
         this.addButton({label: "Terminate", action: this.terminateInstance}, {});
     },
     terminateInstance: function () {
         if (dialog) {
-            AwsUtil.terminateInstance(this.instanceId, _settingsJson);
+            AwsUtil.terminateInstance(instanceIdToTerminate, _settingsJson);
             dialog.close();
             instanceIdToTerminate = null;
             dialog = null;
