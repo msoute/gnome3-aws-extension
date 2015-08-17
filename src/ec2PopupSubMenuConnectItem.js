@@ -28,7 +28,6 @@ const Ec2PopupSubMenuConnectItem = new Lang.Class({
                 let command = undefined;
                 if (privateIp !== undefined && settings["bastion_host"] !== undefined) {
                     global.log(this.privateIp);
-                    //ssh -A -t -t amarsou@bastion.edubase.mlmbrg.nl ssh 10.4.37.33
                     command = "ssh -A -t -t " + this.settings["username"] + "@" + this.settings["bastion_host"] + " ssh " + this.publicIp;
                 } else {
                     command = "ssh " + this.settings["username"] + "@" + this.publicIp;
