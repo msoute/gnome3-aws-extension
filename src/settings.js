@@ -6,7 +6,7 @@ let DefaultSettings = {
     "ssh_username" : "",
     "ssh_key" : "",
     "bastion_host" : "",
-    "Forward_keychain" : false
+    "forward_ssh_agent" : false
 }
 
 function getSettingsJSON(settings) {
