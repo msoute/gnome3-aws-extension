@@ -28,7 +28,7 @@ const Ec2PopupSubMenuConnectItem = new Lang.Class({
                 let command = undefined;
                 if (privateIp !== undefined && settings["bastion_host"] !== undefined) {
                     global.log(this.privateIp);
-                    command = "ssh -A -t -t " + this.settings["username"] + "@" + this.settings["bastion_host"] + " ssh " + this.publicIp;
+                    command = "ssh -A -t -t " + this.settings["username"] + "@" + this.settings["bastion_host"] + " ssh " + this.privateIp;
                 } else {
                     command = "ssh " + this.settings["username"] + "@" + this.publicIp;
                 }
