@@ -4,7 +4,9 @@ let DefaultSettings = {
     "aws_cli_profile" : "",
     "aws_filter_tag_value" : "",
     "ssh_username" : "",
-    "ssh_key" : ""
+    "ssh_key" : "",
+    "bastion_host" : "",
+    "Forward_keychain" : false
 }
 
 function getSettingsJSON(settings) {
