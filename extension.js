@@ -17,16 +17,17 @@ function init(extensionMeta) {
 }
 
 function enable() {
-    global.log("Enable");
     statusIcon = new Ec2TrayItem.Ec2TrayItem(settings);
     Main.panel.addToStatusArea("ec2", statusIcon);
+    event_signals.push(settings.connect('changed::settings-json', function () {
+        statusIcon.updateSettings(settings);
+    }));
 }
 
 function disable() {
-    global.log("Disable");
     statusIcon.destroy();
     // disconnect all signal listeners
-    for( var i=0 ; i<event_signals.length ; ++i ) {
+    for (var i = 0; i < event_signals.length; ++i) {
         settings.disconnect(event_signals[i]);
     }
 }

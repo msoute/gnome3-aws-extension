@@ -10,6 +10,8 @@ const Me = imports.misc.extensionUtils.getCurrentExtension();
 const Ec2PopupMenu = Me.imports.src.ec2PopupMenu;
 const Settings = Me.imports.src.settings;
 
+let popupMenu;
+
 const Ec2TrayItem = new Lang.Class({
     Name: 'Ec2TrayItem',
     Extends: PanelMenu.Button,
@@ -20,11 +22,16 @@ const Ec2TrayItem = new Lang.Class({
             style_class: 'ec2-icon'
         });
         this.actor.add_actor(this._iconActor);
-        this.setMenu(new Ec2PopupMenu.Ec2PopupMenu(this, this.actor, 0.25, St.Side.TOP,  this.settingsJson));
+        popupMenu = new Ec2PopupMenu.Ec2PopupMenu(this, this.actor, 0.25, St.Side.TOP,  this.settingsJson);
+        this.setMenu(popupMenu);
     },
 
     destroy: function() {
         this.parent();
+    },
+
+    updateSettings: function(settings) {
+        popupMenu.updateSettings(Settings.getSettingsJSON(settings));
     }
 })
 

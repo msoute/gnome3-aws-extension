@@ -6,11 +6,20 @@ let DefaultSettings = {
     "ssh_username" : "",
     "ssh_key" : "",
     "bastion_host" : "",
-    "forward_ssh_agent" : false
-}
+    "forward_ssh_agent" : "false"
+};
 
 function getSettingsJSON(settings) {
-    let settingsJSON = JSON.parse(settings.get_string("settings-json"));
-    settingsJSON = settingsJSON || DefaultSettings;
+    if (settings === undefined || settings.get_string("settings-json") === undefined || settings.get_string("settings-json").length === 0) {
+        return DefaultSettings;
+    }
+
+    let settingsJSON;
+    try {
+        settingsJSON = JSON.parse(settings.get_string("settings-json"));
+        settingsJSON = settingsJSON || DefaultSettings;
+    } catch (e) {
+        settingsJSON = DefaultSettings;
+    }
     return settingsJSON;
 }
