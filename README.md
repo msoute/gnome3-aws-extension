@@ -32,7 +32,7 @@ The extensions defaults to [guake](https://github.com/Guake/guake) as the prefer
 
 ## Changelog
 
-* 0.4 Refresh settings on refresh refresh instance list. Show error if aws cli failed
+* 0.4 Refresh settings on refresh instance list. Show error if aws cli failed
 * 0.3 Fix terminate instance bug. Implement refresh action
 * 0.2 Add Option to connect through a bastion host with ProxyCommand
 
