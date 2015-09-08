@@ -6,6 +6,6 @@
   "description": "Utility to quickly connect to EC2 instances from the shell",
   "settings-schema": "org.gnome.shell.extensions.aws-ec2-extension",
   "gettext-domain": "aws-ec2-extension",
-  "version": "0.4"
+  "version": "0.5"
 }
 
