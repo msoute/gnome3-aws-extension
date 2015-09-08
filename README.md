@@ -22,7 +22,7 @@ The extensions defaults to [guake](https://github.com/Guake/guake) as the prefer
 - **SSH Username**  : The username to use.
 - **SSH Key**  : *not implemented yet*
 - **AWS Tag Filter Value** : If provided this tag value wil be used as filter to the describe-instance request
-- **Bastion Host** : If provided this host wil be used to connect to the ec2 instance (using ssh ProxyCommand)
+- **Bastion Host** : If provided this host wil be used to connect to the ec2 instance (using ssh ProxyCommand and the target instance private ip.)
 
 
 ## Known issues
@@ -32,8 +32,19 @@ The extensions defaults to [guake](https://github.com/Guake/guake) as the prefer
 
 ## Changelog
 
-* 0.4 Refresh settings on refresh instance list. Show error if aws cli failed
-* 0.3 Fix terminate instance bug. Implement refresh action
-* 0.2 Add Option to connect through a bastion host with ProxyCommand
+### 0.5 
+ * Fixed connecting without bastion host
+ * [Guake] Fixed tab naming on new connection
+ 
+### 0.4 
+* Refresh settings on refresh instance list. 
+* Show error if aws cli failed
+
+### 0.3 
+* Fix terminate instance bug. 
+* Implement refresh action
+ 
+### 0.2 
+ * Add Option to connect through a bastion host with ProxyCommand
 
 

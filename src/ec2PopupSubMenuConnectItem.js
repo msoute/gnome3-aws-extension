@@ -13,23 +13,17 @@ const Ec2PopupSubMenuConnectItem = new Lang.Class({
 
         _init: function (settings, publicIp, privateIp, environment, params) {
             this.parent(params);
-            this.settings = settings;
-            this.publicIp = publicIp;
-            this.privateIp = privateIp;
-
             this.box = new St.BoxLayout({style_class: 'popup-combobox-item', style:'margin-left: 20px'});
             this.label = new St.Label({text: 'Connect'});
-
-            //this.box.add(this.icon);
             this.box.add(this.label);
             this.actor.add_child(this.box);
 
             this.connect("activate", Lang.bind(this, function () {
                 let command = undefined;
-                if (privateIp !== undefined && settings["bastion_host"] !== undefined) {
-                    command = "ssh -o 'ProxyCommand ssh "  + this.settings["username"] + "@" + this.settings["bastion_host"] + " nc %h %p ' " + this.settings["username"] + "@"+ this.privateIp;
+                if (settings["bastion_host"] !== undefined && settings["bastion_host"].length !== 0) {
+                    command = "ssh -o 'ProxyCommand ssh "  + settings["username"] + "@" + settings["bastion_host"] + " nc %h %p ' " + settings["username"] + "@"+ privateIp;
                 } else {
-                    command = "ssh " + this.settings["username"] + "@" + this.publicIp;
+                    command = "ssh " + settings["username"] + "@" + publicIp;
                 }
                 SshUtil.connect(command, environment)
             }));
