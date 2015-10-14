@@ -1,5 +1,5 @@
 {
-  "shell-version": ["3.16"],
+  "shell-version": ["3.16","3.18"],
   "uuid": "aws_ec2_connect@msoute.gmail.com",
   "name": "Amazon Ec2 Ssh Connect",
   "url": "https://github.com/msoute/gnome3-aws-extension",
