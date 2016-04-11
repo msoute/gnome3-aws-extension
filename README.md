@@ -32,6 +32,9 @@ The extensions defaults to [guake](https://github.com/Guake/guake) as the prefer
 
 ## Changelog
 
+### 0.6
+ * Update for Gnome 3.20
+
 ### 0.5 
  * Fixed connecting without bastion host
  * [Guake] Fixed tab naming on new connection
