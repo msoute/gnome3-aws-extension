@@ -31,8 +31,11 @@ The extensions defaults to [guake](https://github.com/Guake/guake) as the prefer
 * **SSH Key** usage is not implemented yet. Public key authentication only works with the default key.
 
 ## Changelog
-### 0.7
- * Update for Gnome 3.20
+### 0.10
+ * Add option to disable StrictHostKeyChecking
+
+### 0.9
+ * Update for Gnome 3.22
 
 ### 0.6
  * Update for Gnome 3.20
