@@ -25,6 +25,7 @@ function buildPrefsWidget() {
     addSshPublicKey(frame);
     addTagToFilter(frame);
     addBastionHost(frame);
+    addStrictHostKeyChecking(frame);
     frame.show_all();
 
     return frame;
@@ -47,7 +48,6 @@ function addAwsCliProfile(frame) {
     let labelAwsCliProfile = new Gtk.Label({label: "Aws Cli profile", xalign: 0});
     let inputAwsCliProfile = new Gtk.Entry({width_chars : 35, text: settingsJSON['aws_cli_profile'] === undefined ? "" : settingsJSON['aws_cli_profile']});
     inputAwsCliProfile.connect("changed", Lang.bind(this, function(input){ updateServerSetting("aws_cli_profile", input.text); }));
-
     hboxAwsCliProfile.pack_start(labelAwsCliProfile, true, true, 0);
     hboxAwsCliProfile.add(inputAwsCliProfile);
     frame.add(hboxAwsCliProfile);
@@ -86,6 +86,16 @@ function addBastionHost(frame) {
     hboxBastionHost.add(inputBastionHost);
 
     frame.add(hboxBastionHost);
+}
+
+function addStrictHostKeyChecking(frame) {
+    let hboxStrictHostKeyChecking = new Gtk.Box({orientation: Gtk.Orientation.HORIZONTAL});
+    let labelStrictHostKeyChecking = new Gtk.Label({label: "Strict Host Key Checking", xalign: 0});
+    let inputStrictHostKeyChecking = new Gtk.CheckButton({active: settingsJSON['strict_host_key_checking'] === undefined ? true : settingsJSON['strict_host_key_checking']});
+    inputStrictHostKeyChecking.connect("toggled", Lang.bind(this, function(input){ updateServerSetting("strict_host_key_checking", input.active); }));
+    hboxStrictHostKeyChecking.pack_start(labelStrictHostKeyChecking, true, true, 0);
+    hboxStrictHostKeyChecking.add(inputStrictHostKeyChecking);
+    frame.add(hboxStrictHostKeyChecking);
 }
 
 function updateServerSetting(setting, value) {

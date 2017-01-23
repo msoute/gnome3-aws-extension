@@ -20,7 +20,7 @@ const Ec2PopupSubMenu = new Lang.Class({
         this.instanceId = instanceId;
         this.publicIp = publicIp;
         this.privateIp = privateIp;
-        this.menu.addMenuItem(new Ec2PopupSubMenuConnectItem.Ec2PopupSubMenuConnectItem(this.settingsJson, this.publicIp, this.privateIp, environment,{}))
+        this.menu.addMenuItem(new Ec2PopupSubMenuConnectItem.Ec2PopupSubMenuConnectItem(this.settingsJson, this.publicIp, this.privateIp, environment,{}));
         this.menu.addMenuItem(new Ec2PopupSubMenuTerminateItem.Ec2PopupSubMenuTerminateItem(this.settingsJson, this.instanceId, {}))
     }
 

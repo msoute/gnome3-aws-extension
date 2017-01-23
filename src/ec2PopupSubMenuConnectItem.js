@@ -19,11 +19,23 @@ const Ec2PopupSubMenuConnectItem = new Lang.Class({
             this.actor.add_child(this.box);
 
             this.connect("activate", Lang.bind(this, function () {
+                let properties = undefined;
+                let ip = undefined;
                 let command = undefined;
                 if (settings["bastion_host"] !== undefined && settings["bastion_host"].length !== 0) {
-                    command = "ssh -o 'ProxyCommand ssh "  + settings["username"] + "@" + settings["bastion_host"] + " nc %h %p ' " + settings["username"] + "@"+ privateIp;
+                    properties = "-o 'ProxyCommand ssh "  + settings["username"] + "@" + settings["bastion_host"] + " nc %h %p ' ";
+                    ip = privateIp;
                 } else {
-                    command = "ssh " + settings["username"] + "@" + publicIp;
+                    ip = publicIp;
+                }
+                if (settings["strict_host_key_checking"] !== undefined && settings["strict_host_key_checking"] == false) {
+                    properties = properties + "-o 'StrictHostKeyChecking=no'";
+                }
+
+                if (properties) {
+                    command = "ssh " + properties +" "+ settings["username"] + "@" + ip;
+                } else {
+                    command = "ssh " + settings["username"] + "@" + ip;
                 }
                 SshUtil.connect(command, environment)
             }));
