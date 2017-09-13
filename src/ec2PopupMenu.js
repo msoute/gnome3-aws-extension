@@ -11,18 +11,23 @@ const ModalDialog = imports.ui.modalDialog;
 const Me = imports.misc.extensionUtils.getCurrentExtension();
 const Ec2PopupMenuScrollSection = Me.imports.src.ec2PopupMenuScrollSection;
 const Ec2PopupSubMenu = Me.imports.src.ec2PopupSubMenu;
+const Ec2PopupSearchMenu= Me.imports.src.ec2PopupSearchMenu;
 const AwsUtil = Me.imports.src.awsUtil;
 
 let instances;
 let settingsJson;
 let dialog;
+let searchMenu;
+
 const Ec2PopupMenu = new Lang.Class({
     Name: 'Ec2PopupMenu',
     Extends: PopupMenu.PopupMenu,
 
     _init: function (indicator, sourceActor, arrowAlignment, arrowSide, settings) {
         settingsJson = settings;
+        searchMenu = new Ec2PopupSearchMenu.Ec2PopupSearchMenu(settingsJson);
         this.parent(sourceActor, arrowAlignment, arrowSide);
+        this.addMenuItem(searchMenu);
         this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         instances = new Ec2PopupMenuScrollSection.Ec2PopupMenuScrollSection();
         this._updateInstanceList();
@@ -82,5 +87,6 @@ const Ec2PopupMenu = new Lang.Class({
     },
     updateSettings: function(settings) {
         settingsJson = settings;
+        searchMenu.updateSettings(settings)
     }
 });

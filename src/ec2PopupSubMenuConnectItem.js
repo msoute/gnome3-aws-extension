@@ -11,10 +11,10 @@ const Ec2PopupSubMenuConnectItem = new Lang.Class({
         Name: 'Ec2PopupSubMenuConnectItem',
         Extends: PopupMenu.PopupBaseMenuItem,
 
-        _init: function (settings, publicIp, privateIp, environment, params) {
+        _init: function (settings, publicIp, privateIp, instanceId, environment, params) {
             this.parent(params);
             this.box = new St.BoxLayout({style_class: 'popup-combobox-item', style:'margin-left: 20px'});
-            this.label = new St.Label({text: 'Connect'});
+            this.label = new St.Label({text: "Connect (" + instanceId + ")"});
             this.box.add(this.label);
             this.actor.add_child(this.box);
 
@@ -28,7 +28,7 @@ const Ec2PopupSubMenuConnectItem = new Lang.Class({
                 } else {
                     ip = publicIp;
                 }
-                if (settings["strict_host_key_checking"] !== undefined && settings["strict_host_key_checking"] == false) {
+                if (settings["strict_host_key_checking"] !== undefined && settings["strict_host_key_checking"] === false) {
                     properties = properties + "-o 'StrictHostKeyChecking=no'";
                 }
 
@@ -44,5 +44,4 @@ const Ec2PopupSubMenuConnectItem = new Lang.Class({
             this.settings = settings;
             this.label.text = this.settings.name;
         }
-    })
-    ;
+    });
