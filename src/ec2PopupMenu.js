@@ -82,6 +82,7 @@ const Ec2PopupMenu = new Lang.Class({
                 }
             });
         } catch (e) {
+            global.log(e);
             instances.addMenuItem( new PopupMenu.PopupMenuItem(_("Error") + ": " + e.toLocaleString(), {style_class: 'error'}) );
         }
     },
