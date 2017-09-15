@@ -70,7 +70,6 @@ const Ec2PopupMenu = new Lang.Class({
     _updateInstanceList: function () {
         try {
             AwsUtil.listInstances(settingsJson, function(awsJsonResponse) {
-                print(awsJsonResponse);
                 if (awsJsonResponse === undefined) {
                     return;
                 }
