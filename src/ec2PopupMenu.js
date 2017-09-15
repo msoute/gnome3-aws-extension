@@ -69,18 +69,20 @@ const Ec2PopupMenu = new Lang.Class({
     },
     _updateInstanceList: function () {
         try {
-            let awsJsonResponse = AwsUtil.listInstances(settingsJson);
-
-            if (awsJsonResponse === undefined) {
-                return;
-            }
-            instances.removeAll();
-            awsJsonResponse.forEach((ec2Instance) => {
-                if (ec2Instance[0]['State'] === "running") {
-                    let environment = AwsUtil.findTag(ec2Instance, "Name");
-                    instances.addMenuItem(new Ec2PopupSubMenu.Ec2PopupSubMenu(ec2Instance[0]['PublicIp'], ec2Instance[0]['PrivateIp'], environment, ec2Instance[0]['InstanceId'], settingsJson));
+            AwsUtil.listInstances(settingsJson, function(awsJsonResponse) {
+                if (awsJsonResponse === undefined) {
+                    return;
                 }
-            });
+                instances.removeAll();
+                awsJsonResponse.forEach((ec2Instance) => {
+                    if (ec2Instance[0]['State'] === "running") {
+                        let environment = AwsUtil.findTag(ec2Instance, "Name");
+                        instances.addMenuItem(new Ec2PopupSubMenu.Ec2PopupSubMenu(ec2Instance[0]['PublicIp'], ec2Instance[0]['PrivateIp'], environment, ec2Instance[0]['InstanceId'], settingsJson));
+                    }
+                });
+                }
+            );
+
         } catch (e) {
             global.log(e);
             instances.addMenuItem( new PopupMenu.PopupMenuItem(_("Error") + ": " + e.toLocaleString(), {style_class: 'error'}) );
