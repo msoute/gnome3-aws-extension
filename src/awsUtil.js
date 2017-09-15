@@ -2,6 +2,30 @@ const Me = imports.misc.extensionUtils.getCurrentExtension();
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 
+const Ec2PopupSubMenu = Me.imports.src.ec2PopupSubMenu;
+
+function updateInstanceList(instances, settingsJson) {
+    try {
+        this.listInstances(settingsJson, function (awsJsonResponse) {
+                if (awsJsonResponse === undefined) {
+                    return;
+                }
+                instances.removeAll();
+                awsJsonResponse.forEach((ec2Instance) => {
+                    if (ec2Instance[0]['State'] === "running") {
+                        let environment = findTag(ec2Instance, "Name");
+                        instances.addMenuItem(new Ec2PopupSubMenu.Ec2PopupSubMenu(ec2Instance[0]['PublicIp'], ec2Instance[0]['PrivateIp'], environment, ec2Instance[0]['InstanceId'], settingsJson));
+                    }
+                });
+            }
+        );
+    } catch (e) {
+        global.log(e);
+        instances.addMenuItem(new PopupMenu.PopupMenuItem(_("Error") + ": " + e.toLocaleString(), {style_class: 'error'}));
+    }
+}
+
+
 function listInstances(settings, callback) {
     if (settings['aws_filter_tag_value'].length === 0) {
         return undefined;
@@ -17,7 +41,7 @@ function listInstances(settings, callback) {
 
     let [resultJson, length] = (out_reader.read_upto("", GLib.PRIORITY_DEFAULT, null));
 
-    if (resultJson === null ||  resultJson.length === 0) {
+    if (resultJson === null || resultJson.length === 0) {
         return undefined;
     }
     let jsonResponse = JSON.parse(resultJson);

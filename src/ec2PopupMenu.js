@@ -25,12 +25,12 @@ const Ec2PopupMenu = new Lang.Class({
 
     _init: function (indicator, sourceActor, arrowAlignment, arrowSide, settings) {
         settingsJson = settings;
-        searchMenu = new Ec2PopupSearchMenu.Ec2PopupSearchMenu(settingsJson);
+        instances = new Ec2PopupMenuScrollSection.Ec2PopupMenuScrollSection();
+        this._updateInstanceList();
+        searchMenu = new Ec2PopupSearchMenu.Ec2PopupSearchMenu(instances, settingsJson);
         this.parent(sourceActor, arrowAlignment, arrowSide);
         this.addMenuItem(searchMenu);
         this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-        instances = new Ec2PopupMenuScrollSection.Ec2PopupMenuScrollSection();
-        this._updateInstanceList();
         this.addMenuItem(instances);
         this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this.addMenuItem(this._createIconBarMenuItem());
@@ -49,7 +49,7 @@ const Ec2PopupMenu = new Lang.Class({
     },
     _createIconBarMenuItem: function () {
         this.item = new PopupMenu.PopupBaseMenuItem({reactive: false, can_focus: false});
-        this._refreshAction = this._createActionButton('rotation-allowed-symbolic', 'refresh');
+        this._refreshAction = this._createActionButton('view-refresh-symbolic', 'refresh');
         this._refreshAction.connect('clicked', Lang.bind(this, this._updateInstanceList));
         this.item.actor.add(this._refreshAction, {expand: true, x_fill: false, x_align: St.Align.START});
         this._settingsAction = this._createActionButton('preferences-system-symbolic', _("Settings"));
@@ -68,28 +68,10 @@ const Ec2PopupMenu = new Lang.Class({
         this.itemActivated();
     },
     _updateInstanceList: function () {
-        try {
-            AwsUtil.listInstances(settingsJson, function(awsJsonResponse) {
-                if (awsJsonResponse === undefined) {
-                    return;
-                }
-                instances.removeAll();
-                awsJsonResponse.forEach((ec2Instance) => {
-                    if (ec2Instance[0]['State'] === "running") {
-                        let environment = AwsUtil.findTag(ec2Instance, "Name");
-                        instances.addMenuItem(new Ec2PopupSubMenu.Ec2PopupSubMenu(ec2Instance[0]['PublicIp'], ec2Instance[0]['PrivateIp'], environment, ec2Instance[0]['InstanceId'], settingsJson));
-                    }
-                });
-                }
-            );
-
-        } catch (e) {
-            global.log(e);
-            instances.addMenuItem( new PopupMenu.PopupMenuItem(_("Error") + ": " + e.toLocaleString(), {style_class: 'error'}) );
-        }
+            AwsUtil.updateInstanceList(instances, settingsJson);
     },
     updateSettings: function(settings) {
         settingsJson = settings;
-        searchMenu.updateSettings(settings)
+        //searchMenu.updateSettings(settings)
     }
 });
