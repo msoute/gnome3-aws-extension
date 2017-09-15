@@ -1,12 +1,11 @@
-const Params = imports.misc.params;
-
-let DefaultSettings = {
+const DefaultSettings = {
     "aws_cli_profile" : "",
     "aws_filter_tag_value" : "",
     "ssh_username" : "",
     "ssh_key" : "",
     "bastion_host" : "",
-    "forward_ssh_agent" : "false"
+    "forward_ssh_agent" : "false",
+    "strict_host_key_checking" : true
 };
 
 function getSettingsJSON(settings) {

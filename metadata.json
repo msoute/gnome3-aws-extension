@@ -1,11 +1,11 @@
 {
-  "shell-version": ["3.16","3.18", "3.20", "3.22"],
+  "shell-version": ["3.16","3.18", "3.20", "3.22", "3.24", "3.26"],
   "uuid": "aws_ec2_connect@msoute.gmail.com",
   "name": "Amazon Ec2 Ssh Connect",
   "url": "https://github.com/msoute/gnome3-aws-extension",
   "description": "Utility to quickly connect to EC2 instances from the shell",
   "settings-schema": "org.gnome.shell.extensions.aws-ec2-extension",
   "gettext-domain": "aws-ec2-extension",
-  "version": "0.7"
+  "version": "0.11"
 }
 

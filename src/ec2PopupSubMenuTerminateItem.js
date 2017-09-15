@@ -12,6 +12,40 @@ const AwsUtil = Me.imports.src.awsUtil;
 let dialog, _settingsJson;
 let instanceIdToTerminate;
 
+const TerminateInstanceDialog = new Lang.Class({
+    Name: 'TerminateInstanceDialog',
+    Extends: ModalDialog.ModalDialog,
+    _init: function (instanceId) {
+        this.parent({
+            styleClass: 'end-session-dialog',
+            shellReactive: false, destroyOnClose: true
+        });
+        this.label = new St.Label({text: 'Terminate instance : ' + instanceId});
+        const mainContentLayout = new St.BoxLayout({vertical: false});
+        mainContentLayout.add(this.label);
+        instanceIdToTerminate = instanceId;
+
+        this.contentLayout.add(mainContentLayout, {x_fill: true, y_fill: false});
+        this.addButton({label: "Cancel", action: this.cancelTerminateInstance}, {});
+        this.addButton({label: "Terminate", action: this.terminateInstance}, {});
+    },
+    terminateInstance: function () {
+        if (dialog) {
+            AwsUtil.terminateInstance(instanceIdToTerminate, _settingsJson);
+            dialog.close();
+            instanceIdToTerminate = null;
+            dialog = null;
+        }
+    },
+    cancelTerminateInstance: function () {
+        if (dialog) {
+            instanceIdToTerminate = null;
+            dialog.close();
+            dialog = null;
+        }
+    }
+});
+
 const Ec2PopupSubMenuTerminateItem = new Lang.Class({
     Name: 'Ec2PopupSubMenuTerminateItem',
     Extends: PopupMenu.PopupBaseMenuItem,
@@ -34,40 +68,6 @@ const Ec2PopupSubMenuTerminateItem = new Lang.Class({
     _createWarningDialog: function (instanceId) {
         dialog = new TerminateInstanceDialog(instanceId);
         dialog.open();
-    }
-});
-
-const TerminateInstanceDialog = new Lang.Class({
-    Name: 'TerminateInstanceDialog',
-    Extends: ModalDialog.ModalDialog,
-    _init: function (instanceId) {
-        this.parent({
-            styleClass: 'end-session-dialog',
-            shellReactive: false, destroyOnClose: true
-        });
-        this.label = new St.Label({text: 'Terminate instance : ' + instanceId});
-        let mainContentLayout = new St.BoxLayout({vertical: false});
-        mainContentLayout.add(this.label);
-        instanceIdToTerminate = instanceId;
-
-        this.contentLayout.add(mainContentLayout, {x_fill: true, y_fill: false});
-        this.addButton({label: "Cancel", action: this.cancelTerminateInstance}, {});
-        this.addButton({label: "Terminate", action: this.terminateInstance}, {});
-    },
-    terminateInstance: function () {
-        if (dialog) {
-            AwsUtil.terminateInstance(instanceIdToTerminate, _settingsJson);
-            dialog.close();
-            instanceIdToTerminate = null;
-            dialog = null;
-        }
-    },
-    cancelTerminateInstance: function () {
-        if (dialog) {
-            instanceIdToTerminate = null;
-            dialog.close();
-            dialog = null;
-        }
     }
 });
 
