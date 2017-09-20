@@ -10,7 +10,7 @@ This extension depends on a working installation of the [AWS CLI tools](https://
 
 Distro packages :
 
-* [Arch](https://aur.archlinux.org/packages/aws-cli)
+* [Arch](https://www.archlinux.org/packages/community/any/aws-cli/)
 
 To check if the tools are installed correctly run 'aws ec2 describe-instances' from a terminal. It should list all known instances in the configured account. Add -P profile_name if  multiple profiles are configured.
 ### Guake
