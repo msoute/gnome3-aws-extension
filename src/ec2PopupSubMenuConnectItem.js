@@ -22,6 +22,7 @@ const Ec2PopupSubMenuConnectItem = new Lang.Class({
                 let properties = undefined;
                 let ip = undefined;
                 let command = undefined;
+
                 if (settings["bastion_host"] !== undefined && settings["bastion_host"].length !== 0) {
                     properties = "-o 'ProxyCommand ssh "  + settings["username"] + "@" + settings["bastion_host"] + " nc %h %p ' ";
                     ip = privateIp;
@@ -32,10 +33,12 @@ const Ec2PopupSubMenuConnectItem = new Lang.Class({
                     properties = properties + "-o 'StrictHostKeyChecking=no'";
                 }
 
+                let identity = (settings["ssh_key"] !== undefined) ? '-i' + " "+settings["ssh_key"] : "";
+
                 if (properties) {
-                    command = "ssh " + properties +" "+ settings["username"] + "@" + ip;
+                    command = "ssh " +identity+" "+ properties +" "+ settings["username"] + "@" + ip;
                 } else {
-                    command = "ssh " + settings["username"] + "@" + ip;
+                    command = "ssh " +identity+" "+ settings["username"] + "@" + ip;
                 }
                 SshUtil.connect(command, environment)
             }));

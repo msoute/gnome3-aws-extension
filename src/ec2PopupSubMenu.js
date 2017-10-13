@@ -9,7 +9,7 @@ const Ec2PopupSubMenuConnectItem = Me.imports.src.ec2PopupSubMenuConnectItem;
 const Ec2PopupSubMenuTerminateItem = Me.imports.src.ec2PopupSubMenuTerminateItem;
 const AwsUtil = Me.imports.src.awsUtil;
 
-let settingsJsonm, instanceId, host;
+let settingsJson, instanceId, host;
 const Ec2PopupSubMenu = new Lang.Class({
     Name: 'Ec2PopupSubMenu',
     Extends: PopupMenu.PopupSubMenuMenuItem,

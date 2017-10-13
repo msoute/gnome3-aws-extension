@@ -31,6 +31,9 @@ The extensions defaults to [guake](https://github.com/Guake/guake) as the prefer
 * **SSH Key** usage is not implemented yet. Public key authentication only works with the default key.
 
 ## Changelog
+### 0.12
+ * Implement custom identiy file usage (#2)
+
 ### 0.11
  * Update for Gnome 3.26
  * Async call to awssdk
